@@ -1,4 +1,4 @@
-# RSA Decryption Script
+# ElGamal Decryption Script
 
 This Python script demonstrates how to decrypt ciphertext using ElGamal encryption. The decryption process involves using Alice's private key `a` and a prime number `q` to decrypt ciphertext pairs into plaintext messages.
 

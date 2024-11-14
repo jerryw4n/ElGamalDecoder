@@ -1,0 +1,43 @@
+from sympy import mod_inverse
+
+# Function to get user input for q, a, and ciphertext pairs
+def get_input():
+    q = int(input("Enter the prime number q: "))
+    a = int(input("Enter Alice's private key a: "))
+    
+    ciphertext = []
+    num_blocks = int(input("Enter the number of ciphertext pairs: "))
+    
+    for i in range(num_blocks):
+        c1 = int(input(f"Enter the first value of ciphertext pair {i+1}: "))
+        c2 = int(input(f"Enter the second value of ciphertext pair {i+1}: "))
+        ciphertext.append((c1, c2))
+    
+    return q, a, ciphertext
+
+# Decrypt function, c1 is the first of the pair for the block and c2 is the second pair
+def decryptPair(c1, c2, a, q):
+    # s = c1^a % q
+    s = pow(c1, a, q)
+    # Finds the modular inverse of s (s^-1 mod q)
+    sInverse = mod_inverse(s, q)
+    # Finds M (= [c2 * s_inv] mod q)
+    M = (c2 * sInverse) % q
+    return M
+
+# Main execution flow
+q, a, ciphertext = get_input()
+
+# Process all pairs and output each decrypted block
+for c1, c2 in ciphertext:
+    # Decrypts each ciphertext pair to get M
+    M = decryptPair(c1, c2, a, q)
+
+    # Converts M from base-26 to a set of 6-character strings
+    blockText = ""
+    for i in range(6):
+        blockText = chr((M % 26) + ord('a')) + blockText
+        M //= 26
+
+    # Print each string on a new line
+    print(blockText)
